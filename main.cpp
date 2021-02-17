@@ -2,6 +2,8 @@
 #include <string>
 using namespace std;
 
+
+// Prototyping the necessary functions for main method to run.
 void welcomeMessage();
 void nameValidator(string &name, bool &isAlphaOrSpace);
 void capitalNameConvertor(string &name);
@@ -41,7 +43,7 @@ int main(){
     // Start of the do-while loop.
     do{
         // Prompting the user for their account type and validating their input.
-        cout << "What is your account type? \"1\" for Personal, \"2\" for ";
+        cout << R"(What is your account type? "1" for Personal, "2" for )";
         cout << "Business: ";
         cin >> accountType;
         accountTypeValidator(accountType);
