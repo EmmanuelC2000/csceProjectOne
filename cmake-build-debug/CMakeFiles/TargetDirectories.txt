@@ -1,0 +1,3 @@
+/Users/emmanuelcarrillo/Documents/workSpace/CS1030/projects/projectOne/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+/Users/emmanuelcarrillo/Documents/workSpace/CS1030/projects/projectOne/cmake-build-debug/CMakeFiles/edit_cache.dir
+/Users/emmanuelcarrillo/Documents/workSpace/CS1030/projects/projectOne/cmake-build-debug/CMakeFiles/projectOne.dir
