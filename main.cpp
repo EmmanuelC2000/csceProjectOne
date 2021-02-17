@@ -4,6 +4,7 @@ using namespace std;
 
 void welcomeMessage();
 void nameValidator(string &name, bool &isAlphaOrSpace);
+void capitalNameConvertor(string &name);
 void accountTypeValidator(int &accountType);
 void displayAccountSummary(string name, int accountNumber, double persAccBal, double bussAccBal);
 void personalAccountCalculator(double personalAccMinBal, double &persAccCurrBal, double &transactionAmount);
@@ -11,33 +12,41 @@ void businessAccountCalculator(double bussAccMinBal, double &bussAccCurrBal, dou
 
 int main(){
 
+    // Displaying Welcome Message to the user.
     welcomeMessage();
 
+    // Declaration of variables in order to hold minimum balances for both personal and business accounts as well as
+    // the starting balances for both accounts.
     const double personalAccMinBal = 1000.00, businessAccMinBal = 10000.00;
     double personalAccCurrentBal = 1000.00, businessAccCurrentBal = 10000.00;
     enum account {personalAccount = 1, businessAccount = 2};
 
+    // Declaration of variables in order to save the users name, account number, account type and validators.
     string name;
     int accountNumber = 0, accountType = 0;
     double transactionAmount = 0;
     char userChoice;
     bool isAlphaOrSpace;
 
-
+    // Prompting the user for their name and validating their input.
     cout << "Please enter your name: ";
     getline(cin, name);
     nameValidator(name, isAlphaOrSpace);
+    capitalNameConvertor(name);
 
-
+    // Prompting the user for their account number and validating their input.
     cout << "Please enter your account number: ";
     cin >> accountNumber;
 
+    // Start of the do-while loop.
     do{
+        // Prompting the user for their account type and validating their input.
         cout << "What is your account type? \"1\" for Personal, \"2\" for ";
         cout << "Business: ";
         cin >> accountType;
         accountTypeValidator(accountType);
 
+        // Performing a switch case block if account type is valid.
         switch(accountType){
 
             case personalAccount:
@@ -54,15 +63,19 @@ int main(){
                 businessAccountCalculator(businessAccMinBal, businessAccCurrentBal, transactionAmount);
                 cout << "Do you want to process another transaction? Y/N: ";
                 cin >> userChoice;
+
         }
 
     }while(toupper(userChoice) == 'Y');
 
-
+    // Displaying the users account summary after they have completed their transactions.
     displayAccountSummary(name, accountNumber, businessAccCurrentBal, personalAccCurrentBal);
     
     return 0;
 }
+
+
+
 
 void welcomeMessage(){
 
@@ -97,6 +110,19 @@ void nameValidator(string &name, bool &isAlphaOrSpace){
             } else {
                 isAlphaOrSpace = true;
             }
+        }
+    }
+}
+
+void capitalNameConvertor(string &name){
+
+    for(int index = 0; index < name.size(); index++){
+        if(islower(name.at(0))){
+            name.at(index) = toupper(name.at(index));
+        }
+
+        if(isspace(name.at(index))){
+            name.at(index + 1) = toupper(name.at(index + 1));
         }
     }
 }
