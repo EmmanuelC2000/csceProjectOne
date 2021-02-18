@@ -1,5 +1,7 @@
 #include <iostream>
 #include <string>
+#include <ctime>
+#include <cstdlib>
 using namespace std;
 
 
@@ -7,10 +9,15 @@ using namespace std;
 void welcomeMessage();
 void nameValidator(string &name, bool &isAlphaOrSpace);
 void capitalNameConvertor(string &name);
+int accountNumberValidator(int &accountNumber);
+int accountNumberEncryption(int &accountNumber);
 void accountTypeValidator(int &accountType);
-void displayAccountSummary(string name, int accountNumber, double persAccBal, double bussAccBal);
+void displayAccountSummary(const string &name, int accountNumber, double persAccBal, double bussAccBal);
 void personalAccountCalculator(double personalAccMinBal, double &persAccCurrBal, double &transactionAmount);
 void businessAccountCalculator(double bussAccMinBal, double &bussAccCurrBal, double &transactionAmount);
+
+
+
 
 int main(){
 
@@ -39,6 +46,8 @@ int main(){
     // Prompting the user for their account number and validating their input.
     cout << "Please enter your account number: ";
     cin >> accountNumber;
+    accountNumberValidator(accountNumber);
+     accountNumberEncryption(accountNumber);
 
     // Start of the do-while loop.
     do{
@@ -90,6 +99,7 @@ void welcomeMessage(){
 
 }
 
+
 void nameValidator(string &name, bool &isAlphaOrSpace){
 
     for(int index = 0; index < name.length(); index++) {
@@ -116,6 +126,7 @@ void nameValidator(string &name, bool &isAlphaOrSpace){
     }
 }
 
+
 void capitalNameConvertor(string &name){
 
     for(int index = 0; index < name.size(); index++){
@@ -130,16 +141,59 @@ void capitalNameConvertor(string &name){
 }
 
 
+int accountNumberValidator(int &accountNumber){
+
+    int tempValue = accountNumber;
+    int numberOfDigits = 0;
+
+    while(tempValue != 0){
+        numberOfDigits++;
+        tempValue /= 10;
+    }
+
+    while(numberOfDigits < 6 || numberOfDigits > 6){
+
+        numberOfDigits = 0;
+        cout << "Your account number is a 6-digit number. Enter again: ";
+        cin >> accountNumber;
+
+        tempValue = accountNumber;
+
+        while(tempValue != 0) {
+            numberOfDigits++;
+            tempValue /= 10;
+        }
+    }
+
+    return accountNumber;
+
+}
+
+int accountNumberEncryption(int &accountNumber){
+
+    srand(time(0));
+
+    int generatedValue = (rand() % 100000) + 200001;
+
+    accountNumber += generatedValue;
+
+    return accountNumber;
+
+
+}
+
+
 void accountTypeValidator(int &accountType){
 
     while(accountType != 1 && accountType != 2){
 
         cout << "Wrong choice! Please enter again.\n";
-        cout << "What is your account type? \"1\" for Personal, \"2\" for ";
+        cout << R"(What is your account type? "1" for Personal, "2" for )";
         cout << "Business: ";
         cin >> accountType;
     }
 }
+
 
 void personalAccountCalculator(const double personalAccMinBal, double &persAccCurrBal, double &transactionAmount){
 
@@ -151,6 +205,7 @@ void personalAccountCalculator(const double personalAccMinBal, double &persAccCu
     cout << "Personal Account Balance: $" << persAccCurrBal << endl;
 
 }
+
 
 void businessAccountCalculator(const double bussAccMinBal, double &bussAccCurrBal, double &transactionAmount){
 
@@ -165,7 +220,8 @@ void businessAccountCalculator(const double bussAccMinBal, double &bussAccCurrBa
     cout << "Business Balance: $" << bussAccCurrBal << endl;
 }
 
-void displayAccountSummary(string name, int accountNumber, double bussAccBal, double persAccBal){
+
+void displayAccountSummary(const string &name, int accountNumber, double bussAccBal, double persAccBal){
 
     cout << endl;
     cout << "Name: " << name << endl;
