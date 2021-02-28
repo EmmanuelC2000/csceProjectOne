@@ -110,6 +110,13 @@ int main(){
 
 void welcomeMessage(){
 
+    /*
+     * Function: welcomeMessage.
+     * Parameters: N/A.
+     * Return type: Void.
+     * Description: This function displays a welcome message to the user.
+     */
+
     cout << endl;
     cout << "+===========================================+" << endl;
     cout << " Computer Science and Engineering" << endl;
@@ -121,6 +128,14 @@ void welcomeMessage(){
 
 
 void nameValidator(string &name){
+
+    /*
+     * Function: nameValidator
+     * Parameters: A string data type referencing an actual value in the main program.
+     * Return type: Void.
+     * Description: This function will validate the user's name in the main function and it will keep asking them for a
+     * name if the input is invalid.
+     */
 
     bool isAlphaOrSpace = true;
 
@@ -151,6 +166,14 @@ void nameValidator(string &name){
 
 void capitalNameConvertor(string &name){
 
+    /*
+     * Function: capitalNameConvertor
+     * Parameters: A string data type that will reference the name variable in the main program.
+     * Return type: Void.
+     * Description: This function will take the user's name and capitalize at least all of the initials and it will
+     * actually change the value in the main function since this is also utilizing a reference before the name variable.
+     */
+
     for(int index = 0; index < name.size(); index++){
         if(islower(name.at(0))){
             name.at(index) = toupper(name.at(index));
@@ -164,6 +187,14 @@ void capitalNameConvertor(string &name){
 
 
 void accountNumberValidator(int &accountNumber){
+
+    /*
+     * Function: accountNumberValidator
+     * Parameters: An integer data type called accountNumber that will reference the actual value in the main function.
+     * Return type: Void.
+     * Description: This function will validate the user's account number and if invalid it will ask them to keep
+     * entering a valid account number.
+     */
 
     int tempValue = accountNumber;
     int numberOfDigits = 0;
@@ -191,10 +222,18 @@ void accountNumberValidator(int &accountNumber){
 
 void accountNumberEncryption(int &accountNumber){
 
+    /*
+     * Function: accountNumberEncryption
+     * Parameters: An integer data type called accountNumber.
+     * Return type: Void.
+     * Description: This function will encrypt the user's account number and the new value will be saved in the actual
+     * variable in the main function since this function is referencing the value that will be passed by the programmer.
+     */
+
     int temp = 0;
     int numberOfDigits = 0;
 
-    srand(time(0));
+    srand(time(NULL));
 
     int generatedValue = (rand() % 100000) + 200001;
 
@@ -219,6 +258,17 @@ void accountNumberEncryption(int &accountNumber){
 
 void personalAccountCalculator(const double personalAccMinBal, double &persAccCurrBal, double transactionAmount){
 
+    /*
+     * Function: personalAccountCalculator
+     * Parameters: A constant double, a double to hold the user's personal account current balance and a double in order
+     * to hold the transaction amount.
+     * Return type: Void.
+     * Description: This function will perform a calculation and determine if the personal account balance is less
+     * than the personal account minimum balance and if so it will deny the transaction and revert back to the correct
+     * value. The function will also do all of the calculations and save the appropriate value to the personalAccCurrBal
+     * varoiable in the main function.
+     */
+
     persAccCurrBal += transactionAmount;
     if(persAccCurrBal < personalAccMinBal){
         cout << "Your personal balance cannot be less than minimum balance. Transaction denied.\n";
@@ -233,6 +283,15 @@ void personalAccountCalculator(const double personalAccMinBal, double &persAccCu
 
 void isBusinessAccountOverdrawn(const double bussAccMinBal, double bussAccCurrBal, bool &isBussAccOverdrawn){
 
+    /*
+     * Function: welcomeMessage.
+     * Parameters: const double to hold the business account minimum balance, a double to hold the business account
+     * current balance and a boolean variable to flag if the business account is over drawn.
+     * Return type: Void.
+     * Description: This function will determine if the business account is overdrawn by switching the boolean variable
+     * between true or false based on the data provided.
+     */
+
     if(bussAccCurrBal < bussAccMinBal){
         isBussAccOverdrawn = true;
     }
@@ -244,6 +303,16 @@ void isBusinessAccountOverdrawn(const double bussAccMinBal, double bussAccCurrBa
 
 
 void businessAccountCalculator(double &bussAccCurrBal, double transactionAmount, bool &isBussAccOverdrawn){
+
+    /*
+     * Function: welcomeMessage.
+     * Parameters: double to hold the business account current balance, a double to hold the transaction amount, and
+     * a boolean variable to perform a while statement if the condition is true.
+     * Return type: Void.
+     * Description: This function will calculate the new business account current balance and it will save the result
+     * in the appropriate variable in the main function. If the current balance is less than the minimum balance after the
+     * second business transaction an appropriate message will be displayed to the user.
+     */
 
     bussAccCurrBal += transactionAmount;
 
@@ -259,6 +328,14 @@ void businessAccountCalculator(double &bussAccCurrBal, double transactionAmount,
 
 
 void displayAccountSummary(const string name, const int accountNumber, const double bussAccBal, const double persAccBal){
+
+    /*
+     * Function: displayAccountSummary
+     * Parameters: constant parameter to hold the name, account number, business account balance, and personal account
+     * balance.
+     * Return type: Void.
+     * Description: This function will display to the user the final results of their transaction.
+     */
 
     cout << endl;
     cout << "Name: " << name << endl;
