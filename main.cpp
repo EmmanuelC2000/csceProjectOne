@@ -17,8 +17,7 @@ using namespace std;
 void welcomeMessage();
 void nameValidator(string &name);
 void capitalNameConvertor(string &name);
-void accountNumberValidator(int &accountNumber);
-void accountNumberEncryption(int &accountNumber);
+void accountNumberValidationAndEncryption(string &userString, int &accountNumber);
 void displayAccountSummary(string name, int accountNumber, double persAccBal, double bussAccBal);
 void personalAccountCalculator(double personalAccMinBal, double &persAccCurrBal, double transactionAmount);
 void businessAccountCalculator(double &bussAccCurrBal, double transactionAmount, bool &isBussAccOverDrawn);
@@ -45,6 +44,7 @@ int main(){
     double transactionAmount = 0;
     char userChoice;
     bool isAccountTypeValid, isBusinessAccountOverDrawn = false;
+    string userString;
 
 
     // Prompting the user for their name and validating their input.
@@ -56,9 +56,9 @@ int main(){
     // Prompting the user for their account number and validating their input. If the account number is valid the user's
     // account number is than encrypted.
     cout << "Please enter your account number: ";
-    cin >> accountNumber;
-    accountNumberValidator(accountNumber);
-    accountNumberEncryption(accountNumber);
+    getline(cin, userString);
+    accountNumberValidationAndEncryption(userString, accountNumber);
+
 
     // Start of the do-while loop.
     do{
@@ -186,73 +186,38 @@ void capitalNameConvertor(string &name){
 }
 
 
-void accountNumberValidator(int &accountNumber){
+void accountNumberValidationAndEncryption(string &userString, int &accountNumber){
 
     /*
-     * Function: accountNumberValidator
-     * Parameters: An integer data type called accountNumber that will reference the actual value in the main function.
-     * Return type: Void.
-     * Description: This function will validate the user's account number and if invalid it will ask them to keep
-     * entering a valid account number.
-     */
+    * Function: accountNumberValidator
+    * Parameters: A string parameter and an account number parameter in order to save the user's account number.
+    * Return type: Void.
+    * Description: This function will validate the user's account number and if invalid it will ask them to keep
+    * entering a valid account number, this function will also execute the encryption of the account number and save
+     * the result in the account number variable in the main function.
+    */
 
-    int tempValue = accountNumber;
-    int numberOfDigits = 0;
-
-    while(tempValue != 0){
-        numberOfDigits++;
-        tempValue /= 10;
-    }
-
-    while(numberOfDigits != 6){
-
-        numberOfDigits = 0;
-        cout << "Your account number is a 6-digit number. Enter again: ";
-        cin >> accountNumber;
-
-        tempValue = accountNumber;
-
-        while(tempValue != 0) {
-            numberOfDigits++;
-            tempValue /= 10;
-        }
-    }
-}
-
-
-void accountNumberEncryption(int &accountNumber){
-
-    /*
-     * Function: accountNumberEncryption
-     * Parameters: An integer data type called accountNumber.
-     * Return type: Void.
-     * Description: This function will encrypt the user's account number and the new value will be saved in the actual
-     * variable in the main function since this function is referencing the value that will be passed by the programmer.
-     */
-
-    int temp = 0;
-    int numberOfDigits = 0;
-
-    srand(time(NULL));
-
+    srand(time(0));
     int generatedValue = (rand() % 100000) + 200001;
 
+    for(int index = 0; index < userString.size(); index++){
+
+        while(!isdigit(userString.at(index)) || userString.size() != 6){
+            cout << "Your account number can only contain digits and it must be";
+            cout << " a six digit number" << endl;
+            cout << "Please enter again!: ";
+            cin >> userString;
+        }
+    }
+
+    accountNumber = stoi(userString);
     accountNumber += generatedValue;
+    userString = to_string(accountNumber);
 
-    temp = accountNumber;
-
-    while(temp != 0){
-        numberOfDigits++;
-        temp /= 10;
+    if(userString.size() == 7){
+        userString.erase(0,1);
+        accountNumber = stoi(userString);
     }
-
-    if(numberOfDigits > 6){
-
-        accountNumber %= 1000000;
-
-    }
-
-
 }
 
 
