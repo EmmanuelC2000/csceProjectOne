@@ -1,3 +1,12 @@
+#include <iostream>
+#include <string>
+#include <ctime>
+#include <cstdlib>
+#include <iomanip>
+#include <vector>
+using namespace std;
+
+
 /*
  * Emmanuel Carrillo
  * 02/16/2021
@@ -5,23 +14,24 @@
  * This program is a simple banking account simulator.
  */
 
-#include <iostream>
-#include <string>
-#include <ctime>
-#include <cstdlib>
-#include <iomanip>
-using namespace std;
+
 
 
 // Prototyping the necessary functions for main method to run.
+enum Account {personalAccount = 1, businessAccount = 2};
+const double personalAccMinBal = 1000.00, businessAccMinBal = 10000.00;
+
 void welcomeMessage();
+void getName(string &name);
 void nameValidator(string &name);
 void capitalNameConvertor(string &name);
-void accountNumberValidationAndEncryption(string &userString, int &accountNumber);
-void displayAccountSummary(string name, int accountNumber, double persAccBal, double bussAccBal);
-void personalAccountCalculator(double personalAccMinBal, double &persAccCurrBal, double transactionAmount);
+void getAccountNumber(string &userString, int &accountNumber);
+void accountNumberValidation(string &userString, int &accountNumber);
+void displayAccount(Account &userAccount, const string name, const int accountNumber, vector<double> &personal);
+void personalAccountCalculator(double &persAccCurrBal, double transactionAmount, vector<double> &personal);
 void businessAccountCalculator(double &bussAccCurrBal, double transactionAmount, bool &isBussAccOverDrawn);
 void isBusinessAccountOverdrawn(const double bussAccMinBal, double bussAccCurrBal, bool &isBussAccOverdrawn);
+void processAccount(Account &userAccount, double transactionAmount, double &personalAccCurrentBal, double &businessAccCurrentBal, vector<double> &personal);
 
 
 
@@ -33,74 +43,64 @@ int main(){
 
     // Declaration of variables in order to hold minimum balances for both personal and business accounts as well as
     // the starting balances for both accounts. Also declaring an enum in order to utilize it in the switch statement.
-    const double personalAccMinBal = 1000.00, businessAccMinBal = 10000.00;
+
     double personalAccCurrentBal = 1000.00, businessAccCurrentBal = 10000.00;
-    enum Account {personalAccount = 1, businessAccount = 2};
+    enum MenuChoice {process = 1, display = 2, quit = 3};
+    MenuChoice usersOption;
     Account userAccount;
+    vector<double> personalTransactions;
+    vector<double> businessTransactions;
 
     // Declaration of variables in order to save the users name, account number, account type and validators.
     string name;
-    int accountNumber = 0, accountType = 0;
+    int accountNumber = 0, accountType = 0, menuOption = 0;
     double transactionAmount = 0;
     char userChoice;
-    bool isAccountTypeValid, isBusinessAccountOverDrawn = false;
     string userString;
+    bool shouldExit = false;
 
 
     // Prompting the user for their name and validating their input.
-    cout << "Please enter your name: ";
-    getline(cin, name);
-    nameValidator(name);
-    capitalNameConvertor(name);
+    getName(name);
 
     // Prompting the user for their account number and validating their input. If the account number is valid the user's
     // account number is than encrypted.
-    cout << "Please enter your account number: ";
-    getline(cin, userString);
-    accountNumberValidationAndEncryption(userString, accountNumber);
+    getAccountNumber(userString, accountNumber);
 
 
     // Start of the do-while loop.
     do{
+        cout << "1. Process Accounts\n2. Display Account Information\n3. Quit\n";
+        cout << "Please enter your choice: ";
+        cin >> menuOption;
+        userChoice = static_cast<MenuChoice>(menuOption);
 
-        isAccountTypeValid = true;
-        isBusinessAccountOverdrawn(businessAccMinBal, businessAccCurrentBal, isBusinessAccountOverDrawn);
+        switch(userChoice){
 
-        // Prompting the user for their account type and validating their input.
-        cout << R"(What is your account type? "1" for Personal, "2" for Business: )";
-        cin >> accountType;
-        userAccount = static_cast<Account>(accountType);
-
-        // Performing a switch case based on the user's account type if the user types in an invalid account type
-        // the default statement is executed and the do-while loop is performed as many times as needed until the user
-        // provides an adequate choice.
-        switch(userAccount){
-
-            case personalAccount:
-                cout << "Enter transaction amount: $";
-                cin >> transactionAmount;
-                personalAccountCalculator(personalAccMinBal, personalAccCurrentBal, transactionAmount);
-                cout << "Do you want to process another transaction? Y/N: ";
-                cin >> userChoice;
+            case process:
+                processAccount(userAccount, transactionAmount, personalAccCurrentBal,businessAccCurrentBal, personalTransactions);
                 break;
 
-            case businessAccount:
-                cout << "Enter transaction amount: $";
-                cin >> transactionAmount;
-                businessAccountCalculator(businessAccCurrentBal, transactionAmount,isBusinessAccountOverDrawn);
-                cout << "Do you want to process another transaction? Y/N: ";
-                cin >> userChoice;
+            case display:
+                displayAccount(userAccount, name, accountNumber, personalTransactions);
+                break;
+
+            case quit:
+                cout << "Thank you for using our services!\nGoodbye!\n";
+                shouldExit = true;
                 break;
 
             default:
-                cout << "Wrong choice! Please enter again.\n";
-                isAccountTypeValid = false;
+                cout << "Incorrect Choice.\nPlease Try Again!" << endl;
+
         }
 
-    }while(toupper(userChoice) == 'Y' || !(isAccountTypeValid));
 
-    // Displaying the users account summary after they have completed their transactions.
-    displayAccountSummary(name, accountNumber, businessAccCurrentBal, personalAccCurrentBal);
+    }while(!(shouldExit));
+
+
+
+
 
     return 0;
 }
@@ -123,6 +123,16 @@ void welcomeMessage(){
     cout << " CSCE 1030 - Computer Science I" << endl;
     cout << " Emmanuel Carrillo ec0663; ec0663@my.unt.edu" << endl;
     cout << "+===========================================+" << endl << endl;
+
+}
+
+
+void getName(string &name){
+
+    cout << "Please enter your name: ";
+    getline(cin, name);
+    nameValidator(name);
+    capitalNameConvertor(name);
 
 }
 
@@ -186,7 +196,16 @@ void capitalNameConvertor(string &name){
 }
 
 
-void accountNumberValidationAndEncryption(string &userString, int &accountNumber){
+void getAccountNumber(string &userString, int &accountNumber){
+
+    cout << "Please enter your account number: ";
+    getline(cin, userString);
+    accountNumberValidation(userString, accountNumber);
+
+}
+
+
+void accountNumberValidation(string &userString, int &accountNumber){
 
     /*
     * Function: accountNumberValidator
@@ -197,8 +216,7 @@ void accountNumberValidationAndEncryption(string &userString, int &accountNumber
      * the result in the account number variable in the main function.
     */
 
-    srand(time(0));
-    int generatedValue = (rand() % 100000) + 200001;
+
 
     for(int index = 0; index < userString.size(); index++){
 
@@ -211,17 +229,63 @@ void accountNumberValidationAndEncryption(string &userString, int &accountNumber
     }
 
     accountNumber = stoi(userString);
-    accountNumber += generatedValue;
-    userString = to_string(accountNumber);
 
-    if(userString.size() == 7){
-        userString.erase(0,1);
-        accountNumber = stoi(userString);
-    }
+}
+
+void encryptAccountNumber(int&accountNumber){
+
+    string userAccNum = to_string(accountNumber);
+    const int SIZE = userAccNum.length();
+    int encryptArray[SIZE];
 }
 
 
-void personalAccountCalculator(const double personalAccMinBal, double &persAccCurrBal, double transactionAmount){
+void processAccount(Account &userAccount, double transactionAmount, double &personalAccCurrentBal, double &businessAccCurrentBal, vector<double> &personal) {
+
+    int accountType;
+    char userChoice;
+    bool isAccountTypeValid = true, isBussAccOverDrawn = false;
+
+
+    do {
+
+        isAccountTypeValid = true;
+        isBusinessAccountOverdrawn(businessAccMinBal, businessAccCurrentBal, isBussAccOverDrawn);
+
+        cout << R"(What is your account type? "1" for Personal, "2" for Business: )";
+        cin >> accountType;
+        userAccount = static_cast<Account>(accountType);
+
+        switch (userAccount) {
+
+            case personalAccount:
+                cout << "Enter transaction amount: $";
+                cin >> transactionAmount;
+                personalAccountCalculator(personalAccCurrentBal, transactionAmount, personal);
+                cout << "Do you want to process another transaction? Y/N: ";
+                cin >> userChoice;
+                break;
+
+            case businessAccount:
+                cout << "Enter transaction amount: $";
+                cin >> transactionAmount;
+                businessAccountCalculator(businessAccCurrentBal, transactionAmount, isBussAccOverDrawn);
+                cout << "Do you want to process another transaction? Y/N: ";
+                cin >> userChoice;
+                break;
+
+            default:
+                cout << "Wrong choice! Please enter again.\n";
+                isAccountTypeValid = false;
+
+
+        }
+
+    }while (!(isAccountTypeValid) || toupper(userChoice) == 'Y');
+}
+
+
+void personalAccountCalculator(double &persAccCurrBal, double transactionAmount, vector<double> &personal){
 
     /*
      * Function: personalAccountCalculator
@@ -231,14 +295,17 @@ void personalAccountCalculator(const double personalAccMinBal, double &persAccCu
      * Description: This function will perform a calculation and determine if the personal account balance is less
      * than the personal account minimum balance and if so it will deny the transaction and revert back to the correct
      * value. The function will also do all of the calculations and save the appropriate value to the personalAccCurrBal
-     * varoiable in the main function.
+     * variable in the main function.
      */
 
     persAccCurrBal += transactionAmount;
+    personal.push_back(transactionAmount);
     if(persAccCurrBal < personalAccMinBal){
         cout << "Your personal balance cannot be less than minimum balance. Transaction denied.\n";
         persAccCurrBal -= transactionAmount;
+        personal.pop_back();
     }
+
 
     cout << setprecision(2) << fixed;
     cout << "Personal Account Balance: $" << persAccCurrBal << endl;
@@ -292,7 +359,7 @@ void businessAccountCalculator(double &bussAccCurrBal, double transactionAmount,
 }
 
 
-void displayAccountSummary(const string name, const int accountNumber, const double bussAccBal, const double persAccBal){
+void displayAccount(Account &userAccount, const string name, const int accountNumber, vector<double> &personal){
 
     /*
      * Function: displayAccountSummary
@@ -302,11 +369,53 @@ void displayAccountSummary(const string name, const int accountNumber, const dou
      * Description: This function will display to the user the final results of their transaction.
      */
 
-    cout << endl;
-    cout << "Name: " << name << endl;
-    cout << "Account Number: (Encrypted): " << accountNumber << endl;
-    cout << "Business Account Balance: $" << bussAccBal << endl;
-    cout << "Personal Account Balance: $" << persAccBal << endl;
+    int userChoice = 0;
+    bool isValid = true, shouldSort = false;
+    char sortingOption;
+
+    do{
+
+        isValid = true;
+
+        cout << "Name: " <<  name << endl;
+        cout << "Account Number (Encrypted): " << accountNumber << endl;
+
+        cout << "Which account do you want to display? \"1\" for Personal, \"2\" for Business: ";
+        cin >> userChoice;
+        userAccount = static_cast<Account>(userChoice);
+
+        switch(userAccount){
+
+            case personalAccount:
+                cout << "Do you want to sort? Y/N: ";
+                cin >> sortingOption;
+                sortingOption = toupper(sortingOption);
+                if(sortingOption == 'Y'){
+                    shouldSort = true;
+                }
+                for(int index = 0; index < personal.size(); index++){
+
+                    cout << personal.at(index) << endl;
+                }
+                break;
+
+            case businessAccount:
+                cout << "Do you want to sort? Y/N: ";
+                cin >> sortingOption;
+                sortingOption = toupper(sortingOption);
+                if(sortingOption == 'Y'){
+                    shouldSort = true;
+                }
+                break;
+
+            default:
+                cout << "Invalid Option! Please Try Again\n";
+                isValid = false;
+
+        }
+
+
+    }while(!(isValid));
 
 
 }
