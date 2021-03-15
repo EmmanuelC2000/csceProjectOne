@@ -27,11 +27,11 @@ void nameValidator(string &name);
 void capitalNameConvertor(string &name);
 void getAccountNumber(string &userString, int &accountNumber);
 void accountNumberValidation(string &userString, int &accountNumber);
-void displayAccount(Account &userAccount, const string name, const int accountNumber, vector<double> &personal);
+void displayAccount(Account &userAccount, const string name, const int accountNumber, vector<double> &personal, vector<double> &business);
 void personalAccountCalculator(double &persAccCurrBal, double transactionAmount, vector<double> &personal);
-void businessAccountCalculator(double &bussAccCurrBal, double transactionAmount, bool &isBussAccOverDrawn);
+void businessAccountCalculator(double &bussAccCurrBal, double transactionAmount, bool &isBussAccOverDrawn, vector<double> &business);
 void isBusinessAccountOverdrawn(const double bussAccMinBal, double bussAccCurrBal, bool &isBussAccOverdrawn);
-void processAccount(Account &userAccount, double transactionAmount, double &personalAccCurrentBal, double &businessAccCurrentBal, vector<double> &personal);
+void processAccount(Account &userAccount, double transactionAmount, double &personalAccCurrentBal, double &businessAccCurrentBal, vector<double> &personal, vector <double> &business);
 
 
 
@@ -78,11 +78,11 @@ int main(){
         switch(userChoice){
 
             case process:
-                processAccount(userAccount, transactionAmount, personalAccCurrentBal,businessAccCurrentBal, personalTransactions);
+                processAccount(userAccount, transactionAmount, personalAccCurrentBal,businessAccCurrentBal, personalTransactions, businessTransactions);
                 break;
 
             case display:
-                displayAccount(userAccount, name, accountNumber, personalTransactions);
+                displayAccount(userAccount, name, accountNumber, personalTransactions, businessTransactions);
                 break;
 
             case quit:
@@ -240,7 +240,7 @@ void encryptAccountNumber(int&accountNumber){
 }
 
 
-void processAccount(Account &userAccount, double transactionAmount, double &personalAccCurrentBal, double &businessAccCurrentBal, vector<double> &personal) {
+void processAccount(Account &userAccount, double transactionAmount, double &personalAccCurrentBal, double &businessAccCurrentBal, vector<double> &personal, vector <double> &business) {
 
     int accountType;
     char userChoice;
@@ -269,7 +269,7 @@ void processAccount(Account &userAccount, double transactionAmount, double &pers
             case businessAccount:
                 cout << "Enter transaction amount: $";
                 cin >> transactionAmount;
-                businessAccountCalculator(businessAccCurrentBal, transactionAmount, isBussAccOverDrawn);
+                businessAccountCalculator(businessAccCurrentBal, transactionAmount, isBussAccOverDrawn, business);
                 cout << "Do you want to process another transaction? Y/N: ";
                 cin >> userChoice;
                 break;
@@ -334,7 +334,7 @@ void isBusinessAccountOverdrawn(const double bussAccMinBal, double bussAccCurrBa
 }
 
 
-void businessAccountCalculator(double &bussAccCurrBal, double transactionAmount, bool &isBussAccOverdrawn){
+void businessAccountCalculator(double &bussAccCurrBal, double transactionAmount, bool &isBussAccOverdrawn, vector<double> &business){
 
     /*
      * Function: welcomeMessage.
@@ -347,6 +347,11 @@ void businessAccountCalculator(double &bussAccCurrBal, double transactionAmount,
      */
 
     bussAccCurrBal += transactionAmount;
+    for(int index = 0; index < business.size(); index++){
+
+        business.push_back(transactionAmount);
+
+    }
 
     if(isBussAccOverdrawn){
         bussAccCurrBal -= 10;
@@ -359,7 +364,7 @@ void businessAccountCalculator(double &bussAccCurrBal, double transactionAmount,
 }
 
 
-void displayAccount(Account &userAccount, const string name, const int accountNumber, vector<double> &personal){
+void displayAccount(Account &userAccount, const string name, const int accountNumber, vector<double> &personal, vector<double> &business){
 
     /*
      * Function: displayAccountSummary
@@ -395,7 +400,7 @@ void displayAccount(Account &userAccount, const string name, const int accountNu
                 }
                 for(int index = 0; index < personal.size(); index++){
 
-                    cout << personal.at(index) << endl;
+                    cout << "$" << personal.at(index) << endl;
                 }
                 break;
 
@@ -406,6 +411,11 @@ void displayAccount(Account &userAccount, const string name, const int accountNu
                 if(sortingOption == 'Y'){
                     shouldSort = true;
                 }
+                for(int index = 0; index < business.size(); index++){
+
+                    cout << "$" << business.at(index) << endl;
+                }
+
                 break;
 
             default:
