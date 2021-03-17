@@ -27,10 +27,12 @@ void nameValidator(string &name);
 void capitalNameConvertor(string &name);
 void getAccountNumber(string &userString, int &accountNumber);
 void accountNumberValidation(string &userString, int &accountNumber);
-void displayAccount(Account &userAccount, const string name, const int accountNumber, vector<double> &personal, vector<double> &business);
+void encryptAccountNumber(int &accountNumber, string &userAccNumber);
+void displayAccount(Account &userAccount, string name, string userAccNum, vector<double> &personal, vector<double> &business);
 void personalAccountCalculator(double &persAccCurrBal, double transactionAmount, vector<double> &personal);
 void businessAccountCalculator(double &bussAccCurrBal, double transactionAmount, bool &isBussAccOverDrawn, vector<double> &business);
 void isBusinessAccountOverdrawn(const double bussAccMinBal, double bussAccCurrBal, bool &isBussAccOverdrawn);
+void sortValues(vector<double> &transactionAmount);
 void processAccount(Account &userAccount, double transactionAmount, double &personalAccCurrentBal, double &businessAccCurrentBal, vector<double> &personal, vector <double> &business);
 
 
@@ -57,6 +59,7 @@ int main(){
     double transactionAmount = 0;
     char userChoice;
     string userString;
+    string userAccNum;
     bool shouldExit = false;
 
 
@@ -66,7 +69,7 @@ int main(){
     // Prompting the user for their account number and validating their input. If the account number is valid the user's
     // account number is than encrypted.
     getAccountNumber(userString, accountNumber);
-
+    encryptAccountNumber(accountNumber, userAccNum);
 
     // Start of the do-while loop.
     do{
@@ -82,7 +85,7 @@ int main(){
                 break;
 
             case display:
-                displayAccount(userAccount, name, accountNumber, personalTransactions, businessTransactions);
+                displayAccount(userAccount, name, userAccNum, personalTransactions, businessTransactions);
                 break;
 
             case quit:
@@ -232,11 +235,25 @@ void accountNumberValidation(string &userString, int &accountNumber){
 
 }
 
-void encryptAccountNumber(int&accountNumber){
+void encryptAccountNumber(int &accountNumber, string &userAccNum){
 
-    string userAccNum = to_string(accountNumber);
+    srand(time(0));
+
+    userAccNum = to_string(accountNumber);
     const int SIZE = userAccNum.length();
     int encryptArray[SIZE];
+
+    for(int index = 0; index < SIZE; index++){
+
+        encryptArray[index] = (rand() % 11) + 10;
+    }
+
+    for(int index = 0; index < userAccNum.size(); index++){
+
+        userAccNum.at(index) += encryptArray[index];
+
+    }
+
 }
 
 
@@ -347,11 +364,7 @@ void businessAccountCalculator(double &bussAccCurrBal, double transactionAmount,
      */
 
     bussAccCurrBal += transactionAmount;
-    for(int index = 0; index < business.size(); index++){
-
-        business.push_back(transactionAmount);
-
-    }
+    business.push_back(transactionAmount);
 
     if(isBussAccOverdrawn){
         bussAccCurrBal -= 10;
@@ -364,7 +377,7 @@ void businessAccountCalculator(double &bussAccCurrBal, double transactionAmount,
 }
 
 
-void displayAccount(Account &userAccount, const string name, const int accountNumber, vector<double> &personal, vector<double> &business){
+void displayAccount(Account &userAccount, const string name, const string userAccNum, vector<double> &personal, vector<double> &business){
 
     /*
      * Function: displayAccountSummary
@@ -375,7 +388,7 @@ void displayAccount(Account &userAccount, const string name, const int accountNu
      */
 
     int userChoice = 0;
-    bool isValid = true, shouldSort = false;
+    bool isValid = true;
     char sortingOption;
 
     do{
@@ -383,7 +396,7 @@ void displayAccount(Account &userAccount, const string name, const int accountNu
         isValid = true;
 
         cout << "Name: " <<  name << endl;
-        cout << "Account Number (Encrypted): " << accountNumber << endl;
+        cout << "Account Number (Encrypted): " << userAccNum << endl;
 
         cout << "Which account do you want to display? \"1\" for Personal, \"2\" for Business: ";
         cin >> userChoice;
@@ -396,7 +409,7 @@ void displayAccount(Account &userAccount, const string name, const int accountNu
                 cin >> sortingOption;
                 sortingOption = toupper(sortingOption);
                 if(sortingOption == 'Y'){
-                    shouldSort = true;
+                    sortValues(personal);
                 }
                 for(int index = 0; index < personal.size(); index++){
 
@@ -409,7 +422,7 @@ void displayAccount(Account &userAccount, const string name, const int accountNu
                 cin >> sortingOption;
                 sortingOption = toupper(sortingOption);
                 if(sortingOption == 'Y'){
-                    shouldSort = true;
+                    sortValues(business);
                 }
                 for(int index = 0; index < business.size(); index++){
 
@@ -427,5 +440,24 @@ void displayAccount(Account &userAccount, const string name, const int accountNu
 
     }while(!(isValid));
 
+
+}
+
+
+void sortValues(vector<double> &transactionAmount){
+
+    double tempValue = 0;
+
+    for(int outerIndex = 0; outerIndex < (transactionAmount.size() - 1); outerIndex++){
+
+        for(int innerIndex = 0; innerIndex < (transactionAmount.size() - 1 - outerIndex); innerIndex++){
+
+            if(transactionAmount.at(innerIndex) > transactionAmount.at(innerIndex + 1)) {
+                tempValue = transactionAmount.at(innerIndex);
+                transactionAmount.at(innerIndex) = transactionAmount.at(innerIndex + 1);
+                transactionAmount.at(innerIndex + 1) = tempValue;
+            }
+        }
+    }
 
 }
