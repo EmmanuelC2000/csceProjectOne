@@ -94,12 +94,12 @@ clean: CMakeFiles/projectOne.dir/clean
 CMakeFiles/projectOne.dir/all:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/projectOne.dir/build.make CMakeFiles/projectOne.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/projectOne.dir/build.make CMakeFiles/projectOne.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/Users/emmanuelcarrillo/Documents/workSpace/CS1030/projects/projectOne/cmake-build-debug/CMakeFiles --progress-num=1,2 "Built target projectOne"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/Users/emmanuelcarrillo/Documents/workSpace/CS1030/projects/projectOne/cmake-build-debug/CMakeFiles --progress-num=1,2,3 "Built target projectOne"
 .PHONY : CMakeFiles/projectOne.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/projectOne.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/emmanuelcarrillo/Documents/workSpace/CS1030/projects/projectOne/cmake-build-debug/CMakeFiles 2
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/emmanuelcarrillo/Documents/workSpace/CS1030/projects/projectOne/cmake-build-debug/CMakeFiles 3
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/projectOne.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /Users/emmanuelcarrillo/Documents/workSpace/CS1030/projects/projectOne/cmake-build-debug/CMakeFiles 0
 .PHONY : CMakeFiles/projectOne.dir/rule

@@ -4,3 +4,6 @@
 CMakeFiles/projectOne.dir/main.cpp.o: ../functionDeclarations.h
 CMakeFiles/projectOne.dir/main.cpp.o: ../main.cpp
 
+CMakeFiles/projectOne.dir/projectFunctions.cpp.o: ../functionDeclarations.h
+CMakeFiles/projectOne.dir/projectFunctions.cpp.o: ../projectFunctions.cpp
+
