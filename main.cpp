@@ -45,14 +45,20 @@ int main(){
     getAccountNumber(userAccNum);
     encryptAccountNumber(userAccNum);
 
+    bool isValid = true;
     // Start of the do-while loop.
     do{
+
+        // Prompting the user what they would like to do today, if the user inputs an invalid value, the loop will
+        // iterate again. The function "charToIntConvertor" is called in order to change the character value
+        // to an integer in order to use the value for a type casting of MenuChoice.
         cout << "1. Process Accounts\n2. Display Account Information\n3. Quit\n";
         cout << "Please enter your choice: ";
         cin >> userChoice;
-        validateUserChoice(userChoice, userOption);
+        charToIntConvertor(userChoice, userOption);
         menuOption = static_cast<MenuChoice>(userOption);
 
+        // Start of the switch case.
         switch(menuOption){
 
             case process:
@@ -69,7 +75,7 @@ int main(){
                 break;
 
             default:
-                cout << "Incorrect Choice.\nPlease Try Again!" << endl;
+                cout << "Wrong Choice!\nPlease Choose From The Appropriate Options." << endl;
 
         }
 
