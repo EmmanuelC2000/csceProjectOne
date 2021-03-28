@@ -170,6 +170,33 @@ main.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/projectOne.dir/build.make CMakeFiles/projectOne.dir/main.cpp.s
 .PHONY : main.cpp.s
 
+projectFunctions.o: projectFunctions.cpp.o
+
+.PHONY : projectFunctions.o
+
+# target to build an object file
+projectFunctions.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/projectOne.dir/build.make CMakeFiles/projectOne.dir/projectFunctions.cpp.o
+.PHONY : projectFunctions.cpp.o
+
+projectFunctions.i: projectFunctions.cpp.i
+
+.PHONY : projectFunctions.i
+
+# target to preprocess a source file
+projectFunctions.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/projectOne.dir/build.make CMakeFiles/projectOne.dir/projectFunctions.cpp.i
+.PHONY : projectFunctions.cpp.i
+
+projectFunctions.s: projectFunctions.cpp.s
+
+.PHONY : projectFunctions.s
+
+# target to generate assembly for a file
+projectFunctions.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/projectOne.dir/build.make CMakeFiles/projectOne.dir/projectFunctions.cpp.s
+.PHONY : projectFunctions.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -182,6 +209,9 @@ help:
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"
+	@echo "... projectFunctions.o"
+	@echo "... projectFunctions.i"
+	@echo "... projectFunctions.s"
 .PHONY : help
 
 

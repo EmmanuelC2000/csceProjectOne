@@ -6,7 +6,7 @@
 
 #IncludeRegexTransform: 
 
-/Users/emmanuelcarrillo/Documents/workSpace/CS1030/projects/projectOne/main.cpp
+/Users/emmanuelcarrillo/Documents/workSpace/CS1030/projects/projectOne/functionDeclarations.h
 iostream
 -
 string
@@ -17,4 +17,10 @@ cstdlib
 -
 iomanip
 -
+vector
+-
+
+/Users/emmanuelcarrillo/Documents/workSpace/CS1030/projects/projectOne/projectFunctions.cpp
+functionDeclarations.h
+/Users/emmanuelcarrillo/Documents/workSpace/CS1030/projects/projectOne/functionDeclarations.h
 

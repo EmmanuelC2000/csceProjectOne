@@ -80,7 +80,13 @@
 				</MakeCommands>
 			</Target>
 		</Build>
+		<Unit filename="/Users/emmanuelcarrillo/Documents/workSpace/CS1030/projects/projectOne/functionDeclarations.h">
+			<Option target="projectOne"/>
+		</Unit>
 		<Unit filename="/Users/emmanuelcarrillo/Documents/workSpace/CS1030/projects/projectOne/main.cpp">
+			<Option target="projectOne"/>
+		</Unit>
+		<Unit filename="/Users/emmanuelcarrillo/Documents/workSpace/CS1030/projects/projectOne/projectFunctions.cpp">
 			<Option target="projectOne"/>
 		</Unit>
 		<Unit filename="/Users/emmanuelcarrillo/Documents/workSpace/CS1030/projects/projectOne/CMakeLists.txt">
