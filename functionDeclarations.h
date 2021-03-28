@@ -17,6 +17,7 @@ void capitalNameConvertor(string &name);
 void getAccountNumber(string &userAccNum);
 void accountNumberValidation(string &userAccNum);
 void encryptAccountNumber(string &userAccNumber);
+void validateUserChoice(char userChoice, int &userOption);
 void displayAccount(Account &userAccount, string name, string userAccNum, vector<double> &personal, vector<double> &business);
 void personalAccountCalculator(double &persAccCurrBal, double transactionAmount, vector<double> &personal);
 void businessAccountCalculator(double &bussAccCurrBal, double transactionAmount, bool &isBussAccOverDrawn, vector<double> &business);

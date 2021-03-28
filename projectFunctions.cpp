@@ -146,6 +146,19 @@ void encryptAccountNumber(string &userAccNum){
 }
 
 
+void validateUserChoice(char userChoice, int &userOption){
+
+
+    while(userChoice != 49 && userChoice != 50 && userChoice != 51){
+        cout << "Incorrect choice please try again!" << endl;
+        cout << "Please enter your choice: ";
+        cin >> userChoice;
+    }
+
+    userOption = userChoice - 48;
+}
+
+
 void processAccount(Account &userAccount, double transactionAmount, double &personalAccCurrentBal, double &businessAccCurrentBal, vector<double> &personal, vector <double> &business) {
 
     int accountType;
